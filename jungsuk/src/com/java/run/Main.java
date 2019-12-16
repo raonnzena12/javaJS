@@ -42,5 +42,18 @@ public class Main {
 		
 		Array arr = new Array();
 		
+//		arr.array1();
+//		arr.array2();
+//		arr.array3();
+//		arr.array4();
+//		arr.array5();
+//		arr.array6();
+//		arr.array7();
+//		arr.array8();
+//		arr.array9();
+//		arr.array10();
+//		arr.array11();
+//		arr.array12();
+		arr.array16();
 	}
 }
