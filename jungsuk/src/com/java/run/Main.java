@@ -1,9 +1,11 @@
 package com.java.run;
 
 import com.java.chap3.Operator;
+import com.java.chap4.Flow;
+import com.java.chap5.Array;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
 		Operator op = new Operator();
 		
 //		op.operatorEx1();
@@ -26,7 +28,19 @@ public class Main {
 //		op.operatorEx18();
 //		op.operatorEx19();
 //		op.operatorEx20();
-		op.operatorEx21();
+//		op.operatorEx21();
+		
+		Flow flow = new Flow();
+		
+//		flow.flow21();
+//		flow.flow22();
+//		flow.flow23();
+//		flow.flow24();
+//		flow.flow25();
+//		flow.flow26();
+//		flow.flow27();
+		
+		Array arr = new Array();
 		
 	}
 }
