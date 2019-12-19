@@ -7,7 +7,7 @@ import com.java.chap5.Array;
 public class Main {
 	public static void main(String[] args) throws Throwable {
 		Operator op = new Operator();
-		
+		 
 //		op.operatorEx1();
 //		op.operatorEx2();
 //		op.operatorEx3();
@@ -42,5 +42,18 @@ public class Main {
 		
 		Array arr = new Array();
 		
+//		arr.array1();
+//		arr.array2();
+//		arr.array3();
+//		arr.array4();
+//		arr.array5();
+//		arr.array6();
+//		arr.array7();
+//		arr.array8();
+//		arr.array9();
+//		arr.array10();
+//		arr.array11();
+//		arr.array12();
+		arr.array16();
 	}
 }
