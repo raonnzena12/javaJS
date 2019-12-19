@@ -7,7 +7,7 @@ import com.java.chap5.Array;
 public class Main {
 	public static void main(String[] args) throws Throwable {
 		Operator op = new Operator();
-		
+		 
 //		op.operatorEx1();
 //		op.operatorEx2();
 //		op.operatorEx3();
