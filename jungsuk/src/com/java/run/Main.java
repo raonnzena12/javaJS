@@ -1,8 +1,10 @@
 package com.java.run;
 
+import com.java.chap10.Coll;
 import com.java.chap3.Operator;
 import com.java.chap4.Flow;
 import com.java.chap5.Array;
+import com.java.chap9.ClassEx;
 
 public class Main {
 	public static void main(String[] args) throws Throwable {
@@ -54,6 +56,14 @@ public class Main {
 //		arr.array10();
 //		arr.array11();
 //		arr.array12();
-		arr.array16();
+//		arr.array16();
+		
+		ClassEx cl = new ClassEx();
+//		cl.wrapper1();
+//		cl.wrapper2();
+//		cl.wrapper3();
+		
+		Coll col = new Coll();
+		col.arraylist1(); 
 	}
 }
