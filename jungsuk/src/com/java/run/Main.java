@@ -64,6 +64,6 @@ public class Main {
 //		cl.wrapper3();
 		
 		Coll col = new Coll();
-		col.arraylist1();
+		col.arraylist1(); 
 	}
 }
