@@ -64,6 +64,11 @@ public class Main {
 //		cl.wrapper3();
 		
 		Coll col = new Coll();
-		col.arraylist1(); 
+//		col.arraylist1(); 
+//		col.arrayList2(); 
+//		col.vector1();
+//		col.copyTest();
+//		col.arrayListAndLinkedList();
+		col.stackex1();
 	}
 }
