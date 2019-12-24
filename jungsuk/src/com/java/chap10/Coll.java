@@ -2,10 +2,18 @@ package com.java.chap10;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.Vector;
 
 public class Coll {
@@ -236,5 +244,236 @@ public class Coll {
 		if ( !back.empty() ) {
 			forward.push(back.pop());
 		}
+	}
+	
+	public void treeSetLotto() {
+		Set<Integer> set = new TreeSet();
+		
+		for ( int i = 0 ; set.size() < 6 ; i++ ) {
+			int num = (int)(Math.random() * 45) +1;
+			set.add(new Integer(num));
+		}
+		System.out.println(set);
+	}
+	
+	public void treeset1() {
+		TreeSet set = new TreeSet();
+		
+		String from = "b";
+		String to = "d";
+		
+		set.add("abc");
+		set.add("alien");
+		set.add("bat");
+		set.add("car");
+		set.add("Car");
+		set.add("disc");
+		set.add("dance");
+		set.add("dZZZZ");
+		set.add("dzzzz");
+		set.add("elephant");
+		set.add("selevator");
+		set.add("fan");
+		set.add("flower");
+		
+		System.out.println(set);
+		System.out.println("range search : from " + from +" to "+ to);
+		System.out.println("result1 : " + set.subSet(from, to));
+		System.out.println("result2 : " + set.subSet(from, to+"zzz"));
+	}
+	
+	public void asciiprint() {
+		char ch = ' ';
+		// 공백 이후의 문자들을 출력한다.
+		for ( int i = 0 ; i < 95 ; i++ ) {
+			System.out.print(ch++);
+		}
+	}
+	
+	public void treeset2() {
+		TreeSet set = new TreeSet();
+		int[] score = { 80, 95, 50, 35, 45, 65, 10, 100 };
+		
+		for ( int i = 0 ; i < score.length ; i++ ) {
+			set.add(new Integer(score[i]));
+		}
+		System.out.println("50보다 작은 값 : " + set.headSet(new Integer(50)));
+		System.out.println("50보다 큰 값 : " + set.tailSet(new Integer(50)));
+	}
+	
+	public void comparator1() {
+		TreeSet set1 = new TreeSet();
+		TreeSet set2 = new TreeSet(new Descending());
+		
+		int [] score = { 20, 50, 30, 10, 40, 1, 500, 204, 034, 57};
+		
+		for ( int i = 0 ; i < score.length ; i++ ) {
+			set1.add(new Integer(score[i]));
+			set2.add(new Integer(score[i]));
+		}
+		
+		System.out.println("Set1 : " + set1);
+		System.out.println("Set2 : " + set2);
+	}
+	
+	class Descending implements Comparator {
+		public Descending() {}
+		
+		public int compare(Object o1, Object o2) {
+			if ( o1 instanceof Comparable && o2 instanceof Comparable) {
+				Comparable c1 = (Comparable)o1;
+				Comparable c2 = (Comparable)o2;
+				return c1.compareTo(c2) * -1;
+			}
+			return -1;
+		}
+	}
+	
+	public void hashmap2() {
+		HashMap map = new HashMap();
+		map.put("김자바", new Integer(90));
+		map.put("김자바", new Integer(100));
+		map.put("이자바", new Integer(100));
+		map.put("강자바", new Integer(80));
+		map.put("안자바", new Integer(90));
+		
+		Set set = map.entrySet();
+		Iterator it = set.iterator();
+		
+		while(it.hasNext()) {
+			Map.Entry e = (Map.Entry)it.next();
+			System.out.println("이름 : " + e.getKey() +", 점수 : " + e.getValue());
+		}
+		
+		set = map.keySet();
+		System.out.println("참가자 명단 : " + set);
+		
+		Collection values = map.values();
+		it = values.iterator();
+		
+		int total = 0;
+		
+		while ( it.hasNext() ) {
+			Integer i = (Integer)it.next();
+			total += i.intValue();
+		}
+		System.out.println("총점 : " + total);
+		System.out.println("평균 : " + (float)total/set.size());
+		System.out.println("최고점수 : " + Collections.max(values));
+	}
+	
+	public HashMap phoneBook = new HashMap();
+	
+	public void hashmap3() {
+		addPhoneNo("친구", "이자바", "0101111111");
+		addPhoneNo("친구", "김자바", "0102222222");
+		addPhoneNo("친구", "김자바", "0103333333");
+		addPhoneNo("회사", "김대리", "0104444444");
+		addPhoneNo("회사", "김대리", "0105555555");
+		addPhoneNo("회사", "박대리", "0106666666");
+		addPhoneNo("회사", "이과장", "0107777777");
+		addPhoneNo("세탁", "0108888888");
+		
+		printList();
+	}
+	
+	public void addGroup(String groupName) {
+		if ( !phoneBook.containsKey(groupName) ) {
+			phoneBook.put(groupName, new HashMap());
+		}
+	}
+	
+	public void addPhoneNo(String groupName, String name, String tel) {
+		addGroup(groupName);
+		HashMap group = (HashMap)phoneBook.get(groupName);
+		group.put(tel, name);
+	}
+	
+	public void addPhoneNo(String name, String tel) {
+		addPhoneNo("기타", name, tel);
+	}
+	
+	public void printList() {
+		Set set = phoneBook.entrySet();
+		Iterator it = set.iterator();
+		
+		while(it.hasNext()) {
+			Map.Entry e = (Map.Entry)it.next();
+			
+			Set subSet = ((HashMap)e.getValue()).entrySet();
+			Iterator subIt = subSet.iterator();
+			
+			System.out.println(" * " + e.getKey() + "["+subSet.size()+"]");
+			while(subIt.hasNext()) {
+				Map.Entry subE = (Map.Entry)subIt.next();
+				String telNo = (String)subE.getKey();
+				String name = (String)subE.getValue();
+				System.out.println(name + " " + telNo);
+			}
+			System.out.println();
+		}
+	}
+	
+	public void hashmap4() {
+		String[] data = { "a", "k", "a","k","d","k","a","k","k","k","z","d" };
+		HashMap map = new HashMap();
+		
+		for (int i = 0 ; i < data.length ; i++ ) {
+			if ( map.containsKey(data[i])) {
+				Integer value = (Integer)map.get(data[i]);
+				map.put(data[i], new Integer(value.intValue()+1));
+			} else {
+				map.put(data[i], new Integer(1));
+			}
+		}
+		
+		Iterator it = map.entrySet().iterator();
+		
+		while(it.hasNext()) {
+			Map.Entry entry = (Map.Entry)it.next();
+			int value = ((Integer)entry.getValue()).intValue();
+			System.out.println(entry.getKey() + " : " + printBar('#', value) + " " + value);
+		}
+	}
+	
+	public String printBar(char ch, int value) {
+		char[] bar = new char[value];
+		
+		for ( int i = 0 ; i < bar.length ; i++ ) {
+			bar[i] = ch;
+		}
+		return new String(bar);
+	}
+	
+	public void calendar1() {
+		Calendar today = Calendar.getInstance();
+		System.out.println("이 해의 년도 : " + today.get(Calendar.YEAR));
+		System.out.println("월 ( 0~11 ) : " + today.get(Calendar.MONTH));
+		System.out.println("이 해의 몇쨰주 : " + today.get(Calendar.WEEK_OF_YEAR));
+		System.out.println("이 달의 몇째주 : " + today.get(Calendar.WEEK_OF_MONTH));
+		System.out.println("이 달의 몇 일 : " + today.get(Calendar.DATE));
+		System.out.println("이 달의 몇 일 : " + today.get(Calendar.DAY_OF_MONTH));
+		System.out.println("이 해의 몇 일 : " + today.get(Calendar.DAY_OF_YEAR));
+		System.out.println("요일 ( 1~7 ) : " + today.get(Calendar.DAY_OF_WEEK));
+		System.out.println("이 달의 몇째 요일 : " + today.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+		System.out.println("오전_오후(0오전 1오후) : " + today.get(Calendar.AM_PM));
+		System.out.println("시간 (0 ~ 11) : " + today.get(Calendar.HOUR));
+		System.out.println("시간 (0 ~ 23) : " + today.get(Calendar.HOUR_OF_DAY));
+		System.out.println("분 (0 ~ 59) : " + today.get(Calendar.MINUTE));
+		System.out.println("초 (0 ~ 59) : " + today.get(Calendar.SECOND));
+		System.out.println("1000분의 1초(0~999) : " + today.get(Calendar.MILLISECOND));
+		System.out.println("TimeZone(-12 ~ +12) : " + today.get(Calendar.ZONE_OFFSET)/(60*60*1000));
+		System.out.println("이 달의 마지막날 : " + today.getActualMaximum(Calendar.DATE));
+	}
+	
+	public void calendar2() {
+		// 요일은 1 부터 시작하기 때문에 DAY_OF_WEEK[0]을 비워둠
+		final String[] DAY_OF_WEEK = { "", "일", "월" ,"화", "수", "목", "금", "토" };
+		Calendar date1 = Calendar.getInstance();
+		Calendar date2 = Calendar.getInstance();
+		
+		// month의 경우 0 부터 시작하기 때문에 8월인 경우, 7ㄹㅗ 지정해야 한다.
+		date1.set(2019, 7, 15);
+		System.out.println("date1은 " + toString(date1) + DAY_OF_WEEK[date1.get(Calendar.DAY_OF_WEEK)]+"요일이고,");
 	}
 }

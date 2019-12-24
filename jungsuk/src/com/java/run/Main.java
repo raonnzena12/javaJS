@@ -69,6 +69,15 @@ public class Main {
 //		col.vector1();
 //		col.copyTest();
 //		col.arrayListAndLinkedList();
-		col.stackex1();
+//		col.stackex1();
+//		col.treeSetLotto();
+//		col.treeset1();
+//		col.asciiprint();
+//		col.treeset2();
+//		col.comparator1();
+//		col.hashmap2();
+//		col.hashmap3();
+//		col.hashmap4();
+		col.calendar1();
 	}
 }
