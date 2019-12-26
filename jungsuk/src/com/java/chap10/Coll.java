@@ -7,14 +7,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Coll {
 	public Coll() {}
@@ -472,8 +477,251 @@ public class Coll {
 		Calendar date1 = Calendar.getInstance();
 		Calendar date2 = Calendar.getInstance();
 		
-		// month의 경우 0 부터 시작하기 때문에 8월인 경우, 7ㄹㅗ 지정해야 한다.
+		// month의 경우 0 부터 시작하기 때문에 8월인 경우, 7로 지정해야 한다.
 		date1.set(2019, 7, 15);
 		System.out.println("date1은 " + toString(date1) + DAY_OF_WEEK[date1.get(Calendar.DAY_OF_WEEK)]+"요일이고,");
+		System.out.println("오늘(date2)은 " + toString(date2) + DAY_OF_WEEK[date2.get(Calendar.DAY_OF_WEEK)] + "요일 입니다.");
+		// 두 날짜간의 차이를 얻으려면, getTimeInMillis()를 이용해서 천분의 일초 단위로 변환해야 한다.
+		long difference = (date2.getTimeInMillis() - date1.getTimeInMillis())/1000;
+		System.out.println("그 날 (date1) 부터 지금 (date2)까지 " + difference +"초가 지났습니다");
+		System.out.println("일(day)로 계산하면 "+ difference/(24*60*60)+"일 입니다.");
+	}
+	
+	public String toString(Calendar date) {
+		return date.get(Calendar.YEAR)+"년 " + (date.get(Calendar.MONTH)+ 1)+"월 " + date.get(Calendar.DATE) + "일";
+	}
+	
+	public void calendar4() {
+		Scanner scan = new Scanner(System.in);
+		
+		int year = scan.nextInt();
+		scan.nextLine();
+		int month = scan.nextInt();
+		scan.nextLine();
+		
+		int START_DAY_OF_WEEK = 0;
+		int END_DAY = 0;
+		
+		Calendar sDay = Calendar.getInstance();
+		Calendar eDay = Calendar.getInstance();
+		
+		// 월의 경우 0부터 11까지의 값을 가지므로 1을 빼주어야 한다.
+		// 예를 들어, 2004년 11월 1 일은 sDay.set(2004, 10, 1)과 같이 해줘야 한다.
+		sDay.set(year, month-1, 1);
+		eDay.set(year, month, 1);
+		
+		// 다음달의 첫날에서 하루를 빼면 현재달의 마지막 날이 된다.
+		// 12월 1일에서 하루를 빼면 11월 30일이 된다.
+		eDay.add(Calendar.DATE, -1);
+		
+		// 첫 번째 요일이 무슨 요일인지 알아낸다.
+		START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK);
+		// eDay에 지정된 날짜를 얻어온다.
+		END_DAY = eDay.get(Calendar.DATE);
+		
+		System.out.println("=== "+year+"년 "+month+"월 ===");
+		System.out.println(" SU MO TU WE TH FR SA ");
+		
+		// 해당 월의 1일이 어느 요일인지에 따라서 공백을 출력한다.
+		// 만일 1일이 수요일이라면 공백을 세번 찍는다.(일요일부터 시작)
+		for ( int i = 1 ; i < START_DAY_OF_WEEK ; i++ ) {
+			System.out.print("   ");
+		}
+		
+		for ( int i = 1 , n = START_DAY_OF_WEEK ; i <= END_DAY ; i++, n++ ) {
+			System.out.print((i<10)? "  " + i : " " + i);
+			if ( n%7 == 0 ) System.out.println();
+		}
+	}
+	
+	public void calendar7() {
+		Scanner scan = new Scanner(System.in);
+		
+		int year = scan.nextInt();
+		scan.nextLine();
+		int month = scan.nextInt();
+		scan.nextLine();
+		
+		Calendar sDay = Calendar.getInstance();
+		Calendar eDay = Calendar.getInstance();
+		
+		sDay.set(year, month-1, 1);
+		// 입력월의 말일로 설정한다.
+		eDay.set(year, month-1, sDay.getActualMaximum(Calendar.DATE));
+		
+		// 1일이 속한 주의 일요일로 날짜 설정
+		sDay.add(Calendar.DATE, -sDay.get(Calendar.DAY_OF_WEEK) + 1);
+		
+		// 말일이 속한 주의 토요일로 날짜 설정
+		eDay.add(Calendar.DATE, 7-eDay.get(Calendar.DAY_OF_WEEK));
+		
+		System.out.println("=== "+year+"년 "+month+"월 ===");
+		System.out.println(" SU MO TU WE TH FR SA ");
+
+		// 시작일과 마지막일까지(sDay <= eDay) 1일씩 증가시켜가면서 일(Calendar.DATE)을 출력한다.
+		for ( int n = 1 ; sDay.before(eDay) || sDay.equals(eDay) ; sDay.add(Calendar.DATE, 1)) {
+			int day = sDay.get(Calendar.DATE);
+			System.out.print((day<10)? "  " + day : " " + day);
+			if ( n++%7 == 0 ) System.out.println();
+		}
+	}
+	
+	public void random1() {
+		Random rand = new Random(1);
+		Random rand2 = new Random(1);
+		
+		System.out.println(" === rand ===");
+		for (int i = 0 ; i < 5 ; i++ )
+			System.out.println(i + " : " + rand.nextInt() );
+		
+		System.out.println();
+		System.out.println("=== rand2 ===");
+		for ( int i = 0 ; i < 5 ; i++ ) 
+			System.out.println(i + " : " + rand2.nextInt());
+	}
+	
+	public void random2() {
+		Random rand = new Random();
+		int[] number = new int[100];
+		int[] counter = new int[10];
+		
+		for ( int i = 0 ; i < number.length ; i++ ) {
+			// 0<= x < 10 범위의 정수 x를 반환한다.
+			System.out.print(number[i] = rand.nextInt(10));
+		}
+		System.out.println();
+		
+		for ( int i = 0 ; i < number.length ; i++ ) {
+			counter[number[i]]++;
+		}
+		
+		for ( int i = 0 ; i < counter.length ; i++ ) {
+			System.out.println(i+"의 갯수 : " + printBar('#', counter[i]) + " " + counter[i]);
+		}
+	}
+	
+	public void random3() {
+		for ( int i = 0 ; i < 10 ; i++ ) {
+			System.out.print(getRand(5,10) + ",");
+		}
+		System.out.println();
+		
+		int[] result = fillRand(new int[10], new int[] {2, 3, 7, 5});
+		System.out.println(Arrays.toString(result));
+		
+		String[] result2 = fillDistinctRand(new String[3], new String[] {"a","b","c","d","e"});
+		System.out.println(Arrays.toString(result2));
+	}
+	
+	public int[] fillRand(int[] arr, int from, int to) {
+		for ( int i = 0 ; i < arr.length ; i++ ) {
+			arr[i] = getRand(from, to);
+		}
+		return arr;
+	}
+	
+	public int[] fillRand(int[] arr, int[] data) {
+		for (int i = 0 ; i < arr.length ; i++ ) {
+			arr[i] = data[getRand(0, data.length -1)];
+		}
+		return arr;
+	}
+	
+	public int getRand(int from, int to) {
+		return (int)(Math.random() * (Math.abs(to-from) +1)) + Math.min(from, to);
+	}
+	
+	public String[] fillDistinctRand(String[] arr, String[] data) {
+		if ( arr.length <= 0 || data.length <= 0) return arr;
+		
+		HashSet hs = new HashSet(arr.length);
+		
+		while(hs.size() < Math.min(arr.length, data.length)) {
+			hs.add(data[getRand(0,data.length-1)]);
+		}
+		Object[] tmp = hs.toArray();
+		
+		for ( int i = 0 ; i < tmp.length ; i++ ) {
+			arr[i] = (String)tmp[i];
+		}
+		
+		return arr;
+	}
+	
+	final int RECODE_NUM = 10;
+	final String TABLE_NAME = "TEST_TABLE";
+	final String[] CODE1 = {"010", "011", "017", "018", "019"};
+	final String[] CODE2 = {"남자", "여자"};
+	final String[] CODE3 = {"10대", "20대", "30대", "40대", "50대"};
+	
+	public void random4() {
+		for ( int i = 0 ; i < RECODE_NUM ; i++ ) {
+			System.out.println("INSERT INTO " + TABLE_NAME + " VALUES ("
+								+ " '" + getRandArr(CODE1) + "' "
+								+ ", '" + getRandArr(CODE2) + "' "
+								+ ", '" + getRandArr(CODE3) + "' "
+								+ ", " + getRand(100,200) + "); ");
+		}
+	}
+	
+	public String getRandArr(String[] arr) {
+		return arr[getRand(arr.length-1)];
+	}
+	
+	public int getRand(int n) {
+		return getRand(0, n);
+	}
+	
+	public void random5() {
+		String[] data = { "a", "a", "b", "c"};
+		
+		HashMap map = new HashMap();
+		
+		for ( int i = 0 ; i < 100 ; i++ ) {
+			String temp = getRandArr(data);
+			if ( map.containsKey(temp)) {
+				Integer value = (Integer)map.get(temp);
+				map.put(temp, new Integer(value.intValue()+ 1));
+			} else {
+				map.put(temp, new Integer(1));
+			}
+		}
+		
+		Iterator it = map.keySet().iterator();
+		while(it.hasNext()) {
+			String key = (String)it.next();
+			Integer value = (Integer)map.get(key);
+			int intValue = value.intValue();
+			System.out.println(key + " : " + printBar('#', intValue) + intValue);
+		}
+	}
+	
+	public void regular1() {
+		String[] data = { "bat", "baby", "bonus", "cA", "ca", "co","c.","c0","car","combat","count","date","disc"};
+		Pattern p = Pattern.compile("c[a-z]*");
+		
+		for ( int i = 0 ; i < data.length ; i++ ) {
+			Matcher m = p.matcher(data[i]);
+			if ( m.matches() ) {
+				System.out.print(data[i] + ", ");
+			}
+		}
+	}
+	
+	public void regular2() {
+		String[] data = {"bat","baby","bonus","c","cA","va","co","c.","c0","c#","car","combat","count","date","disc"};
+		String[] pattern = { ".*", "c[a-z]*","c[a-z]", "c[a-zA-Z]","c[a-zA-Z0-9]"
+							,"c.","c.*","c\\.","c\\w","c\\d","c.*t","[b|c].*",".*a.*",".*a.+","[b|c].{2}"};
+		for ( int x = 0 ; x < pattern.length ; x++ ) {
+			Pattern p = Pattern.compile(pattern[x]);
+			System.out.print("Pattern " + pattern[x] + " 결과 : ");
+			for ( int i = 0 ; i < data.length ; i ++ ) {
+				Matcher m = p.matcher(data[i]);
+				if ( m.matches() ) {
+					System.out.print(data[i]+", ");
+				}
+			}
+			System.out.println();
+		}
 	}
 }
