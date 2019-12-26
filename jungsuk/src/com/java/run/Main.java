@@ -78,6 +78,15 @@ public class Main {
 //		col.hashmap2();
 //		col.hashmap3();
 //		col.hashmap4();
-		col.calendar1();
+//		col.calendar1();
+//		col.calendar2();
+//		col.calendar4();
+//		col.calendar7();
+//		col.random1();
+//		col.random2();
+//		col.random4();
+//		col.random5();
+//		col.regular1();
+		col.regular2();
 	}
 }
