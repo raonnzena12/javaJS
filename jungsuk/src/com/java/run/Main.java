@@ -87,6 +87,18 @@ public class Main {
 //		col.random4();
 //		col.random5();
 //		col.regular1();
-		col.regular2();
+//		col.regular2();
+//		col.regular3();
+//		col.regular4();
+//		col.scanner1();
+//		col.st1();
+//		col.st2();
+//		col.st3();
+//		col.st4();
+//		col.st5();
+//		col.dateformat3();
+//		col.choice1();
+//		col.choice2();
+		col.message1();
 	}
 }
