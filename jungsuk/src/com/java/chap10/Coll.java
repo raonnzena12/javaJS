@@ -1,11 +1,17 @@
 package com.java.chap10;
 
+import java.io.File;
+import java.text.ChoiceFormat;
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,10 +22,12 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class Coll {
 	public Coll() {}
@@ -723,5 +731,204 @@ public class Coll {
 			}
 			System.out.println();
 		}
+	}
+	
+	public void regular3() {
+		String source = "HP: 011-1111-1111, HOME: 02-999-9999";
+		String pattern = "(0\\d{1,2})-(\\d{3,4})-(\\d{4})";
+		
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(source);
+		
+		int i = 0 ;
+		while(m.find()) {
+			System.out.println(++i + ": " + m.group() + " -> " + m.group(1) + ", " + m.group(2) + ", " + m.group(3));
+		}
+	}
+	
+	public void regular4() {
+		String source = "A broken hand works, but not a broken heart.";
+		String pattern = "broken";
+		StringBuffer sb = new StringBuffer();
+		
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(source);
+		System.out.println("source : " + source);
+		
+		int i = 0;
+		while(m.find()) {
+			System.out.println(++i+"번째 매칭 : " + m.start() + "~" + m.end());
+			// broken을 drunken으로 치환하여 sb에 저장한다.
+			m.appendReplacement(sb, "drunken");
+		}
+		
+		m.appendTail(sb);
+		System.out.println("Replacement count : " + i);
+		System.out.println("result : " + sb.toString());
+	}
+	
+	public void scanner1() {
+		Scanner scan = new Scanner(System.in); // Scanner(InputStrean source)
+		String input = "";
+		do {
+			System.out.println("원하는 값을 입력하세요. 입력을 마치려면 Q를 입력하세요 >");
+			input = scan.nextLine();
+			System.out.println("입력하신 값은 " + input + "입니다.");
+		} while(!input.equalsIgnoreCase("Q"));
+		
+		System.out.println("프로그램 종료");
+	}
+	
+	public void scanner2() throws Exception {
+		Scanner sc = new Scanner(new File("data2.txt"));
+		int sum = 0;
+		int cnt = 0;
+		
+		while ( sc.hasNextInt()) {
+			sum += sc.nextInt();
+			cnt++;
+		}
+		System.out.println("sum = " + sum);
+		System.out.println("acerage = " + (double)sum/cnt);
+	}
+	
+	public void scanner3() throws Exception {
+		Scanner sc = new Scanner(new File("data3.txt"));
+		int cnt = 0;
+		int totalSum = 0;
+		
+		while(sc.hasNextLine()) {
+			String line = sc.nextLine();
+			Scanner sc2 = new Scanner(line).useDelimiter(",");
+			int sum = 0;
+			while ( sc.hasNextLine()) {
+				sum += sc2.nextInt();
+			}
+			System.out.println(line + ", sum = " + sum);
+			totalSum += sum;
+			cnt++;
+		}
+		System.out.println("Line : " + cnt + ", Total : " + totalSum);
+	}
+	
+	public void st1() {
+		String source = "100,200,300,400";
+		StringTokenizer st = new StringTokenizer(source, ",");
+		while ( st.hasMoreTokens() ) {
+			System.out.println(st.nextToken());
+		}
+	}
+	
+	public void st2() {
+		String expression = "x=100*(200+300)/2";
+		StringTokenizer st = new StringTokenizer(expression, "+-*/=()", true);
+		
+		while ( st.hasMoreTokens()) {
+			System.out.println(st.nextToken());
+		}
+	}
+	
+	public void st3() {
+		String source = "1,김천재,100,100,100|2,박수재,95,80,90|3,김자바,80,90,90";
+		StringTokenizer st = new StringTokenizer(source, "|");
+		while ( st.hasMoreTokens()) {
+			String token = st.nextToken();
+			StringTokenizer st2 = new StringTokenizer(token,",");
+			while(st2.hasMoreTokens()) {
+				System.out.println(st2.nextToken());
+			}
+			System.out.println("=== === ===");
+		}
+	}
+	
+	public void st4() {
+		String input = "삼십만삼천백십오";
+		System.out.println(input);
+		System.out.println(hangulToNum(input));
+	}
+	
+	public long hangulToNum(String input) {
+		long result = 0;
+		long tmpResult = 0;
+		long num = 0;
+		
+		final String NUMBER = "영일이삼사오육칠팔구";
+		final String UNIT = "십백천만억조";
+		final long[] UNIT_NUM = { 10, 100, 1000, 10000, (long)Math.pow(10, 8), (long)Math.pow(10, 12) };
+		StringTokenizer st = new StringTokenizer(input, UNIT, true);
+		while (st.hasMoreTokens()) {
+			String token = st.nextToken();
+			// 숫자인지, 단위(UNIT)인지 확인한다.
+			int check = NUMBER.indexOf(token);
+			if ( check == -1 ) {
+				if ("만억조".indexOf(token) == -1 ) {
+					tmpResult += ( num != 0 ? num : 1 ) * UNIT_NUM[UNIT.indexOf(token)];
+				} else {
+					tmpResult += num;
+					result += (tmpResult != 0 ? tmpResult : 1 ) * UNIT_NUM[UNIT.indexOf(token)];
+					tmpResult = 0;
+				}
+				num = 0;
+			} else {
+				num = check;
+			}
+		}
+		return result + tmpResult + num;
+	}
+	
+	public void st5() {
+		String data = "100,,,200,300,400,,500";
+		String[] result = data.split(",");
+		StringTokenizer st = new StringTokenizer(data,",");
+		for ( int i = 0 ; i < result.length ; i++ ) {
+			System.out.print(result[i] + "|");
+		}
+		System.out.println("개수 : " + result.length);
+		
+		int i = 0;
+		for (;st.hasMoreTokens(); i++) {
+			System.out.print(st.nextToken()+"|");
+		}
+		System.out.println("개수 : " + i);
+	}
+	
+	public void dateformat3() {
+		DateFormat df = new SimpleDateFormat("yyyy년 MM월 dd일");
+		DateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
+		
+		try {
+			Date d = df.parse("2019년 12월 30일");
+			System.out.println(df2.format(d));
+		} catch (Exception e) {
+		}
+	}
+	
+	public void choice1() {
+		double[] limits = { 60, 70, 80, 90 };
+		String[] grades = { "D", "C", "B", "A" };
+		int[] scores = { 100, 95, 88, 70, 52, 60 ,70 };
+		ChoiceFormat form = new ChoiceFormat(limits, grades);
+		
+		for ( int i = 0 ; i < scores.length ; i++ ) {
+			System.out.println(scores[i] + ":" + form.format(scores[i]));
+		}
+	}
+	
+	public void choice2() {
+		String pattern = "60#D|70#C|80<B|90#A";
+		int[] scores = { 91, 90, 80, 88, 70, 52, 60 };
+		ChoiceFormat form = new ChoiceFormat(pattern);
+		
+		for( int i = 0 ; i <scores.length ; i++ ) {
+			System.out.println(scores[i] + ":" + form.format(scores[i]));
+		}
+			
+	}
+	
+	public void message1() {
+		String msg = "NAME: {0} \nTEL: {1} \nAGE: {2} \nBIRTH: {3}";
+		Object[] args = { "이자바", "02-123-1234", "27", "07-09" };
+		String result = MessageFormat.format(msg, args);
+		System.out.println(result);
 	}
 }
