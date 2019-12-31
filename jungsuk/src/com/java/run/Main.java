@@ -1,6 +1,7 @@
 package com.java.run;
 
 import com.java.chap10.Coll;
+import com.java.chap12.ThreadTest;
 import com.java.chap3.Operator;
 import com.java.chap4.Flow;
 import com.java.chap5.Array;
@@ -99,6 +100,14 @@ public class Main {
 //		col.dateformat3();
 //		col.choice1();
 //		col.choice2();
-		col.message1();
+//		col.message1();
+		
+		ThreadTest tt = new ThreadTest();
+		
+//		tt.thread21();
+//		tt.thread22();
+//		tt.thread23();
+//		tt.thread24();
+		tt.thread25();
 	}
 }
