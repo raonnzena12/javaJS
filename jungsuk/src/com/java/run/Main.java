@@ -2,6 +2,7 @@ package com.java.run;
 
 import com.java.chap10.Coll;
 import com.java.chap12.ThreadTest;
+import com.java.chap13.AWTTest;
 import com.java.chap3.Operator;
 import com.java.chap4.Flow;
 import com.java.chap5.Array;
@@ -108,6 +109,37 @@ public class Main {
 //		tt.thread22();
 //		tt.thread23();
 //		tt.thread24();
-		tt.thread25();
+//		tt.thread25();
+		
+		AWTTest at = new AWTTest();
+		
+//		at.frame1();
+//		at.frame2();
+//		at.button1();
+//		at.button2();
+//		at.choice1();
+//		at.list1();
+//		at.label1();
+//		at.checkbox1();
+//		at.textField1();
+//		at.textArea1();
+//		at.scrollbar1();
+//		at.canvas1();
+//		at.panel1();
+//		at.scrollPane1();
+//		at.dialog1();
+//		at.dialog2();
+//		at.fileDialog1();
+//		at.fontList();
+//		at.fontTest();
+//		at.color1();
+//		at.menu1();
+//		at.popupMenu1();
+//		at.borderlayout1();
+//		at.flowLayout1();
+//		at.gridLayout1();
+//		at.cardLayout1();
+//		at.calc();
+		at.frame3();
 	}
 }
