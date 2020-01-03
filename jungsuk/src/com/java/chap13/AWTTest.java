@@ -2,6 +2,12 @@ package com.java.chap13;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class AWTTest {
 	public AWTTest() {}
@@ -584,5 +590,663 @@ public class AWTTest {
 		}
 		public void windowDeiconified(WindowEvent e) {
 		}
+	}
+	
+	public Label lid;
+	public Label lpwd;
+	public TextField tfId;
+	public TextField tfPwd;
+	public Button ok;
+	
+	public void textField2() {
+		TextFieldTest2 f = new TextFieldTest2("Login");
+	}
+	
+	class TextFieldTest2 extends Frame {
+		public TextFieldTest2(String title) {
+			super(title); //Frame(String title)을 호출한다
+			
+			lid = new Label("ID : " , Label.RIGHT);
+			lpwd = new Label("PWD : " , Label.RIGHT);
+			
+			tfId = new TextField(10);
+			tfPwd = new TextField(10);
+			tfPwd.setEchoChar('*');
+			
+			ok = new Button("OK");
+			// ok 버튼과 TextField에 이벤트 처리를 위한 Listener를 추가해준다.
+			tfId.addActionListener(new EventHandler());
+			tfPwd.addActionListener(new EventHandler());
+			ok.addActionListener(new EventHandler());
+			
+			setLayout(new FlowLayout());
+			add(lid);
+			add(tfId);
+			add(lpwd);
+			add(tfPwd);
+			add(ok);
+			setSize(450,65);
+			setVisible(true);
+		}
+	}
+	
+	class EventHandler implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String id = tfId.getText();
+			String password = tfPwd.getText();
+			if ( !id.equals("javachobo")) {
+				System.out.println("입력하신 id가 유효하지 않습니다. 다시 입력해주세요");
+				// id를 입력할 수 있도록 focus를 tfId로 옮긴다.
+				tfId.requestFocus();
+				tfId.selectAll();
+			} else if ( !password.equals("asdf")) {
+				System.out.println("입력하신 비밀번호가 틀렸습니다. 다시 입력해주시기 바랍니다.");
+				tfPwd.requestFocus();
+				tfPwd.selectAll();
+			} else {
+				System.out.println(id + "님, 성공적으로 로그인 되었습니다.");
+			}
+		}
+	}
+	
+	public Label location;
+	
+	class MouseEventTest extends Frame {
+		MouseEventTest(String title) {
+			super(title);
+			location = new Label("Mouser Pointer Location : " );
+			location.setSize(195,15);
+			location.setLocation(5,30);
+			location.setBackground(Color.yellow);
+			add(location);
+			
+			addMouseMotionListener(new EventHandler1());
+			
+			setSize(300,200);
+			setLayout(null);
+			setVisible(true);
+		}
+	}
+	
+	class EventHandler1 implements MouseMotionListener {
+		public void mouseDragged(MouseEvent arg0) {
+		}
+		public void mouseMoved(MouseEvent e) {
+			location.setText("Mouse Pointer Location : (" + e.getX() +"," + e.getY()+")");
+		}
+	}
+	
+	public void mouseEvent1() {
+		MouseEventTest mainWin = new MouseEventTest("MouseEventTest");
+	}
+	
+	
+	class TextComponentEventTest extends Frame {
+		TextField tf;
+		TextArea ta;
+		
+		TextComponentEventTest(String title) {
+			super(title);
+			tf = new TextField();
+			ta = new TextArea();
+			add(ta,"Center");
+			add(tf,"South");
+			tf.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// textField에서 enter를 치면, tf에 입력된 text를 textArea에 추가한다.
+					ta.append(tf.getText() + "\n");
+					tf.setText("");
+					tf.requestFocus();
+				}
+			});
+			ta.setEditable(false);
+			setSize(300,200);
+			setVisible(true);
+			tf.requestFocus();
+		}
+	}
+	
+	public void textComponentEvent1() {
+		TextComponentEventTest mainWin = new TextComponentEventTest("TextComponentEventTest");
+	}
+	
+	class CheckboxEventTest extends Frame {
+		Label q1;
+		Label q2;
+		Label score;
+		Checkbox q1cb1, q1cb2, q1cb3, q1cb4;
+		Checkbox q2cb1, q2cb2, q2cb3, q2cb4;
+		CheckboxGroup group;
+		Button end;
+		
+		CheckboxEventTest(String title) {
+			super(title);
+			setSize(500,300);
+			setLayout(new GridLayout(13,1));
+			q1 = new Label("1. 다음 중 actionEvent의 actionPerformed메서드가 호출되는 경우는? (모두 고르시오)");
+			q1cb1 = new Checkbox("Button을 눌렀을 때");
+			q1cb2 = new Checkbox("TextField에서 Enter키를 눌렀을 때");
+			q1cb3 = new Checkbox("MenuItem을 클릭했을 때");
+			q1cb4 = new Checkbox("List에서 더블클릭으로 item을 선택했을 때");
+			
+			q2 = new Label("2. Frame의 기본 LayoutManager는?");
+			group = new CheckboxGroup();
+			q2cb1 = new Checkbox("FlowLayout", group, false);
+			q2cb2 = new Checkbox("GirdLayout", group, false);
+			q2cb3 = new Checkbox("BorderLayout", group, false);
+			q2cb4 = new Checkbox("CardLayout", group, false);
+			
+			score = new Label("* 결과 : ");
+			end = new Button("결과 확인");
+			end.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					float totalScore = 0;
+					if ( q1cb1.getState()) totalScore += 12.5;
+					if ( q1cb2.getState()) totalScore += 12.5;
+					if ( q1cb3.getState()) totalScore += 12.5;
+					if ( q1cb4.getState()) totalScore += 12.5;
+					if ( q2cb3.getState()) totalScore += 50;
+					score.setText("* 결과 : 당신의 점수는 " + totalScore +"점 입니다.");
+				}
+			});
+			
+			add(q1);
+			add(q1cb1); add(q1cb2); add(q1cb3); add(q1cb4);
+			add(new Label(""));
+			add(q2);
+			add(q2cb1); add(q2cb2); add(q2cb3); add(q2cb4);
+			add(end);
+			add(score);
+			setVisible(true);
+		}
+	}
+	
+	public void chechboxEvent1() {
+		CheckboxEventTest mainWin = new CheckboxEventTest("CheckboxEventTest = Quiz");
+	}
+	
+	class CheckboxEventTest2 extends Frame {
+		CheckboxGroup group;
+		Checkbox cb1;
+		Checkbox cb2;
+		Checkbox cb3;
+		
+		CheckboxEventTest2(String title) {
+			super(title);
+			group = new CheckboxGroup();
+			cb1 = new Checkbox("red", group, true);
+			cb2 = new Checkbox("green", group, false);
+			cb3 = new Checkbox("blue", group, false);
+			
+			cb1.addItemListener(new EventHandler2());
+			cb2.addItemListener(new EventHandler2());
+			cb3.addItemListener(new EventHandler2());
+			
+			setLayout(new FlowLayout());
+			add(cb1);
+			add(cb2);
+			add(cb3);
+			setBackground(Color.red);
+			setSize(300,200);
+			setVisible(true);
+		}
+		
+		class EventHandler2 implements ItemListener {
+			public void itemStateChanged(ItemEvent e) {
+				Checkbox cb = (Checkbox)e.getSource();
+				String color = cb.getLabel();
+				if(color.equals("red")) {
+					setBackground(Color.red);
+				} else if (color.equals("green")) {
+					setBackground(Color.green);
+				} else {
+					setBackground(Color.blue);
+				}
+			}
+		}
+	}
+	
+	public void checkboxEvent2() {
+		CheckboxEventTest2 mainWin = new CheckboxEventTest2("CheckboxEventTest2");
+	}
+	
+	class CardLayoutEventTest extends Frame {
+		Button first, prev, next, last;
+		Panel buttons;
+		Panel slide;
+		Panel card1, card2, card3, card4, card5;
+		CardLayout card;
+		
+		CardLayoutEventTest(String title) {
+			super(title);
+			
+			// 화면을 담을 Panel을 담는다.
+			slide = new Panel();
+			card = new CardLayout();
+			slide.setLayout(card);
+			
+			// 버튼을 담을 Panel을 만든다.
+			buttons = new Panel();
+			buttons.setLayout(new FlowLayout());
+			
+			first = new Button("<<");
+			prev = new Button("<");
+			next = new Button(">");
+			last = new Button(">>");
+			buttons.add(first);
+			buttons.add(prev);
+			buttons.add(next);
+			buttons.add(last);
+			
+			//버튼에 이벤트 리스너를 추가한다
+			first.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// CardLayout의 첫 번쨰 slide(Panel)이 보이도록 한다.
+					card.first(slide);
+				}
+			});
+			prev.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					card.previous(slide);
+				}
+			});
+			next.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					card.next(slide);
+				}
+			});
+			last.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					card.last(slide);
+				}
+			});
+			
+			card1 = new Panel();
+			card1.setBackground(Color.DARK_GRAY);
+			card1.add(new Label("1st Page"));
+			card2 = new Panel();
+			card2.setBackground(Color.orange);
+			card2.add(new Label("2nd Page"));
+			card3 = new Panel();
+			card3.setBackground(Color.blue);
+			card3.add(new Label("3rd Page"));
+			card4 = new Panel();
+			card4.setBackground(Color.cyan);
+			card4.add(new Label("4th Page"));
+			card5 = new Panel();
+			card5.setBackground(Color.pink);
+			card5.add(new Label("5th Page"));
+			
+			// slide(Panel)에 card1(ㅖPanel)을 1이란 이름으로 추가한다.
+			slide.add(card1, "1");
+			slide.add(card2, "2");
+			slide.add(card3, "3");
+			slide.add(card4, "4");
+			slide.add(card5, "5");
+			
+			add("South", buttons);
+			add("Center", slide);
+			
+			setSize(200,200);
+			setLocation(200,200);
+			setVisible(true);
+			
+			card.show(slide, "1");
+		}
+		
+	}
+	
+	public void cardLayoutEvent1() {
+		CardLayoutEventTest mainWin = new CardLayoutEventTest("card layout event");
+	}
+	
+	class TextEditor extends Frame {
+		String fileName;
+		TextArea content;
+		MenuBar mb;
+		Menu mFile;
+		MenuItem miNew, miOpen, miSaveAs, miExit;
+		
+		TextEditor(String title) {
+			super(title);
+			content = new TextArea();
+			add(content);
+			
+			mb = new MenuBar();
+			mFile = new Menu("FILE");
+			miNew = new MenuItem("NEW");
+			miOpen = new MenuItem("OPEN");
+			miSaveAs = new MenuItem("SAVE AS...");
+			miExit = new MenuItem("EXIT");
+			
+			mFile.add(miNew);
+			mFile.add(miOpen);
+			mFile.add(miSaveAs);
+			mFile.addSeparator();
+			mFile.add(miExit);
+			
+			mb.add(mFile);
+			setMenuBar(mb);
+			
+			MyHandler handler = new MyHandler();
+			miNew.addActionListener(handler);
+			miOpen.addActionListener(handler);
+			miSaveAs.addActionListener(handler);
+			miExit.addActionListener(handler);
+			
+			setSize(300,200);
+			setVisible(true);
+		}
+		
+		void fileOpen(String fileName) {
+			FileReader fr;
+			BufferedReader br;
+			StringWriter sw;
+			
+			try {
+				fr = new FileReader(fileName);
+				br = new BufferedReader(fr);
+				sw = new StringWriter();
+				
+				int ch = 0;
+				while((ch=br.read()) != -1 ) {
+					sw.write(ch);
+				}
+				br.close();
+				content.setText(sw.toString());
+			} catch(IOException e ) {
+				e.printStackTrace();
+			}
+		}
+		
+		void saveAs(String fileName) {
+			FileWriter fw;
+			BufferedWriter bw;
+			
+			try {
+				fw = new FileWriter(fileName);
+				bw = new BufferedWriter(fw);
+				bw.write(content.getText());
+				bw.close();
+			} catch(IOException ie) {
+				ie.printStackTrace();
+			}
+		}
+		class MyHandler implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String command = e.getActionCommand();
+				
+				if ( command.equals("NEW")) {
+					content.setText("");
+				} else if (command.equals("OPEN")) {
+					FileDialog fileOpen = new FileDialog(TextEditor.this, "파일열기");
+					fileOpen.setVisible(true);
+					fileName = fileOpen.getDirectory()+fileOpen.getFile();
+					System.out.println(fileName);
+					fileOpen(fileName);
+				} else if (command.equals("SAVE AS...")) {
+					FileDialog fileSave = new FileDialog(TextEditor.this, "파일저장", FileDialog.SAVE);
+					fileSave.setVisible(true);
+					fileName = fileSave.getDirectory()+fileSave.getFile();
+					System.out.println(fileName);
+					// 현재 TextArea의 내용을 선택된 파일에 저장한다.
+					saveAs(fileName);
+				} else if (command.equals("EXIT")) {
+					System.exit(0);
+				}
+			}
+			
+		}
+	}
+	
+	public void textEditor1() {
+		TextEditor mainWin = new TextEditor("test editor");
+	}
+	
+	public void paintFrame1() {
+		PaintFrame f = new PaintFrame("paintFrame");
+		
+		Graphics g = f.getGraphics();
+		g.setColor(Color.red);
+		
+		for ( int i = 0 ; true ; i+= f.speed ) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e ) {
+				
+			}
+			g.clearRect(0, 0, 300, 300);
+			g.drawString("Hello", i , 150);
+			i = (i <300)? i : 0;
+		}
+	}
+	
+	class PaintFrame extends Frame {
+		int speed = 1;
+		Scrollbar sb = new Scrollbar(Scrollbar.HORIZONTAL, 0, 5, 0, 50);
+		Label lSpeed = new Label("Speed : 1");
+		
+		PaintFrame(String title) {
+			super(title);
+			lSpeed.setBackground(Color.yellow);
+			lSpeed.setSize(65, 15);
+			lSpeed.setLocation(10,30);
+			sb.setSize(260,20);
+			sb.setLocation(20,250);
+			add(sb);
+			add(lSpeed);
+			sb.addAdjustmentListener(new MyHandler());
+			addWindowListener(new MyHandler());
+			setSize(300,300);
+			setLayout(null);
+			setVisible(true);
+			setResizable(false);
+		}
+		
+		class MyHandler extends WindowAdapter implements AdjustmentListener {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				speed = sb.getValue();
+				lSpeed.setText("Speed : " + speed);
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		}
+	}
+	
+	class ChatWin extends Frame {
+		String nickname = "";
+		
+		TextArea ta = new TextArea();
+		
+		Panel p = new Panel();
+		TextField tf = new TextField();
+		
+		ChatWin() {
+			this("guest");
+		}
+		
+		ChatWin(String nickname) {
+			super("Chatting");
+			this.nickname = nickname;
+			
+			setBounds(100,100,300,200);
+			
+			p.setLayout(new BorderLayout());
+			p.add(tf, "Center");
+			
+			add(ta, "Center");
+			add(p, "South");
+			
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
+			
+			EventHandler handler = new EventHandler();
+			ta.addFocusListener(handler);
+			tf.addFocusListener(handler);
+			tf.addActionListener(handler);
+			
+			ta.setText("#" + nickname + "님 즐거운 채팅되세요");
+			ta.setEditable(false);
+			
+			setVisible(true);
+			tf.requestFocus();
+		}
+		class EventHandler extends FocusAdapter implements ActionListener {
+			public void actionPerformed(ActionEvent ae) {
+				String msg = tf.getText();
+				if("".equals(msg)) return;
+				
+				ta.append("\r\n" + nickname + "> " +msg);
+				tf.setText("");
+			}
+			
+			public void focusGained(FocusEvent e) {
+				tf.requestFocus();
+			}
+		}
+	}
+	
+	public void charWin() {
+		new ChatWin("aaa");
+	}
+	
+	class Graphics2 extends Frame implements MouseMotionListener {
+		int x = 0;
+		int y = 0;
+		
+		public Graphics2(String title) {
+			super(title);
+			addMouseMotionListener(this);
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent we) {
+					System.exit(0);
+				}
+			});
+			
+			setBounds(100,100,500,500);
+			setVisible(true);
+		}
+		
+		public void paint(Graphics g) {
+			g.drawString("마우스를 움직여보세요", 10, 50);
+			g.drawString("★", x, y);
+		}
+		
+		public void mouseMoved(MouseEvent me) {
+			x = me.getX();
+			y = me.getY();
+			repaint();
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	public void graphics2() {
+		new Graphics2("craphics2");
+	}
+	
+	class Graphics4 extends Frame implements MouseMotionListener {
+		int x = 0 ;
+		int y = 0 ;
+		
+		Image img = null;
+		Graphics gImg = null;
+		
+		public Graphics4(String title) {
+			super(title);
+			addMouseMotionListener(this);
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent we) {
+					System.exit(0);
+				}
+			});
+			
+			setBounds(100,100,500,500);
+			setVisible(true);
+			
+			img = createImage(500,500);
+			gImg = img.getGraphics();
+			gImg.drawString("draw", 10, 50);
+			repaint();
+		}
+		
+		public void paint(Graphics g) {
+			if ( img != null ) {
+				g.drawImage(img, 0, 0, this);
+			}
+		}
+		
+		public void mouseMoved(MouseEvent me) {}
+		
+		public void mouseDragged(MouseEvent me) {
+			if ( me.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
+				x = me.getX();
+				y = me.getY();
+				gImg.drawString("*", x, y);
+				repaint();
+			}
+		}
+	}
+	
+	public void graphics4() {
+		new Graphics4("test");
+	}
+	
+	class Graphics5 extends Frame implements MouseMotionListener {
+		int x = 0;
+		int y = 0;
+		
+		Image img = null;
+		Graphics gImg = null;
+		
+		public Graphics5(String title) {
+			super(title);
+			addMouseMotionListener(this);
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			});
+			
+			setBounds(100,100,500,500);
+			setVisible(true);
+			
+			img = createImage(500,500);
+			gImg = img.getGraphics();
+			gImg.drawString("draw it", 10, 50);
+			repaint();
+		}
+		
+		public void paint(Graphics g) {
+			if ( img == null ) return;
+			g.drawImage(img,  0, 0, this);
+		}
+		
+		public void mouseMoved(MouseEvent me) {
+			x = me.getX();
+			y = me.getY();
+		}
+		
+		public void mouseDragged(MouseEvent me) {
+			if (me.getModifiersEx() != MouseEvent.BUTTON1_DOWN_MASK) return;
+			gImg.drawLine(x, y, me.getX(), me.getY());
+			x = me.getX();
+			y = me.getY();
+			repaint();
+		}
+	}
+	
+	public void graphics5() {
+		new Graphics5("test");
 	}
 }

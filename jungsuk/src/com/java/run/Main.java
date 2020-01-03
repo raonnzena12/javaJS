@@ -3,6 +3,7 @@ package com.java.run;
 import com.java.chap10.Coll;
 import com.java.chap12.ThreadTest;
 import com.java.chap13.AWTTest;
+import com.java.chap14.InputOutput;
 import com.java.chap3.Operator;
 import com.java.chap4.Flow;
 import com.java.chap5.Array;
@@ -140,6 +141,25 @@ public class Main {
 //		at.gridLayout1();
 //		at.cardLayout1();
 //		at.calc();
-		at.frame3();
+//		at.frame3();
+//		at.textField2();
+//		at.mouseEvent1();
+//		at.textComponentEvent1();
+//		at.chechboxEvent1();
+//		at.checkboxEvent2();
+//		at.cardLayoutEvent1();
+//		at.textEditor1();
+//		at.paintFrame1();
+//		at.charWin();
+//		at.graphics2();
+//		at.graphics4();
+//		at.graphics5();
+		
+		InputOutput io = new InputOutput();
+		
+//		io.io1();
+//		io.io2();
+//		io.io3();
+		io.io4();
 	}
 }
